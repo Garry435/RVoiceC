@@ -155,14 +155,16 @@ def svc_infer(index_path, index_rate, input_path, output_path, pitch_change, f0_
     print(f'saved in {output_path}')
     
 
-def get_model_path(folder):
-    svc_model_path, svc_index_path = None,None
-    for filee in os.listdir(folder):
-        if filee.endswith('.index'):
-            svc_index_path = folder+'/'+filee
-        if filee.endswith('.pth'):
-            svc_model_path = folder+'/'+filee
-    return svc_model_path, svc_index_path
+def get_model_path(folder_path):    
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.pth'):
+                pth_f = os.path.join(root, file)
+    for root, _, files in os.walk(folder_path):
+        for file in files:
+            if file.endswith('.index'):
+                index_f = os.path.join(root, file)
+    return pth_f,index_f
 
 def extract(filename,output_path=""):
     with ZipFile(filename,'r') as zObject:
