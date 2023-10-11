@@ -3,7 +3,7 @@ MDX_DOWNLOAD_LINK = 'https://github.com/TRvlvr/model_repo/releases/download/all_
 def dl_model(link, model_name):
     with requests.get(f'{link}{model_name}') as r:
         r.raise_for_status()
-        with open(f"mdxnet_models/{model_name}", 'wb') as f:
+        with open(f"/mdxnet_models/{model_name}", 'wb') as f:
             for chunk in r.iter_content(chunk_size=8192):
                 f.write(chunk)
 
