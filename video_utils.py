@@ -1,27 +1,14 @@
-from moviepy.editor import VideoFileClip,AudioFileClip, clips_array
+import subprocess
+import os
 
-def separate_av(input_file, output_audio_path, output_video_path):
-    try:
-        video_clip = VideoFileClip(input_file)
-        audio_clip = video_clip.audio
-        video_clip_without_audio = video_clip.set_audio(None)
-        audio_clip.write_audiofile(output_audio_path)
-        video_clip_without_audio.write_videofile(output_video_path, codec="libx264")
-        video_clip.close()
-        audio_clip.close()
-        print("Separation complete.")
-    except Exception as e:
-        print(f"Error: {e}")
-
-def merge_av(video_path, audio_path, output_path):
-    try:
-        video_clip = VideoFileClip(video_path)
-        audio_clip = AudioFileClip(audio_path)
-
-        video_clip = video_clip.set_audio(audio_clip)
-
-        video_clip.write_videofile(output_path, codec="libx264")
-
-        print("Merging complete.")
-    except Exception as e:
-        print(f"Error: {e}")
+def seperate_av(input_video,output_video,output_audio):
+    command = f"ffmpeg -i {input_video} -an -vcodec copy {output_video}"
+    subprocess.call(command, shell=True)
+    command = f"ffmpeg -i {input_video} -vn -acodec libmp3lame {output_audio}"
+    subprocess.call(command, shell=True)
+    print(f"Audio extracted successfully. Output audio: {output_audio}") if os.path.exists(output_audio) else print("Error: Output audio file not found.")
+    print(f"Video extracted successfully. Output Video: {output_video}") if os.path.exists(output_video) else print("Error: Output video file not found.")
+def merge_av(output_video,input_video,input_audio):
+    command = f'ffmpeg -i {input_video} -i {input_audio} -c:v copy -c:a aac -strict experimental {output_video}'
+    subprocess.call(command, shell=True)
+    print(f"Video merged successfully. Output Video: {output_video}") if os.path.exists(output_video) else print("Error: Output video file not found.")
