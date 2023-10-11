@@ -1,6 +1,6 @@
 from Voice_clean.mdx import run_mdx
 import json
-def preprocess_audio(orig_audio_path, mdx_model_params,mdxnet_models_dir='Voice_clean/mdxnet_models',audio_output_dir='Voice_clean/audio_outputs'):
+def preprocess_audio(orig_audio_path,mdxnet_models_dir='Voice_clean/mdxnet_models',audio_output_dir='Voice_clean/audio_outputs'):
     with open('mdxnet_models/model_data.json') as infile:
         mdx_model_params = json.load(infile)
     print('[~] Cleaning Vocals')
